@@ -1076,9 +1076,45 @@ a:focus-visible {
 
 .admin-panel .admin-checkbox input[type="checkbox"]:checked::after {
   transform: rotate(45deg) scale(1);
+  
 }
 
 .admin-panel .admin-checkbox input[type="checkbox"]:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
+}
+
+
+.services-summary {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 24px;
+  margin-top: 24px;
+  padding: 24px 28px;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.services-summary h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.services-summary ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  margin: 0;
+  padding: 0;
+  color: var(--color-muted);
+  list-style: none;
+}
+
+@media (max-width: 700px) {
+  .services-summary {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding-inline: 8px;
+  }
 }
