@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Desmond Simanya is a graphic designer, UI/UX designer, and front-end developer.">
+  <meta name="description" content="Explore the work, services, and contact details of Desmond Simanya, a graphic designer, UI/UX designer, and front-end developer.">
   <title>Desmond Simanya | Designer &amp; Front-end Developer</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -25,24 +25,23 @@
     </button>
 
     <nav class="site-nav" id="primary-navigation" aria-label="Main navigation">
-      <a href="index.html" aria-current="page">Home</a>
-      <a href="work.html">Work</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <a href="#home" aria-current="page">Home</a>
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
     </nav>
-
-    <a class="button button-small" href="contact.html">Hire me</a>
+    <a class="button button-small" href="#contact">Hire me</a>
   </header>
 
   <main>
-    <section class="hero container">
+    <section class="hero container" id="home">
       <p class="eyebrow">Graphic design · UI/UX · Front-end</p>
       <h1>Design<br>&amp; build.</h1>
       <p class="hero-intro">
         I’m Desmond Simanya, a graphic designer, UI/UX designer, and
         front-end developer building my skills and portfolio one project at a time.
       </p>
-      <a class="button" href="#selected-work">
+      <a class="button" href="#work">
         See my work <span aria-hidden="true">→</span>
       </a>
       <img
@@ -52,42 +51,150 @@
       >
     </section>
 
-    <section class="selected-work container" id="selected-work">
+    <section class="portfolio-page container one-page-section" id="work">
       <div class="section-heading">
         <div>
           <p class="eyebrow">Portfolio</p>
-          <h2>Selected work</h2>
+          <h2>Selected work<span>.</span></h2>
         </div>
-        <a href="work.html">
-          See all work <span aria-hidden="true">→</span>
-        </a>
       </div>
 
-      <div class="work-grid" id="home-projects"></div>
+      <p class="portfolio-intro-copy">
+        A collection of my graphic design, branding, UI/UX, and web projects.
+      </p>
+
+      <div class="portfolio-filters" role="group" aria-label="Filter projects by category">
+        <button type="button" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-filter="branding" aria-pressed="false">Branding</button>
+        <button type="button" data-filter="graphic-design" aria-pressed="false">Graphic design</button>
+        <button type="button" data-filter="websites" aria-pressed="false">Websites</button>
+        <button type="button" data-filter="ui-ux" aria-pressed="false">UI/UX &amp; Apps</button>
+        <button type="button" data-filter="other" aria-pressed="false">Other</button>
+      </div>
+
+      <section
+        class="portfolio-grid"
+        id="portfolio-grid"
+        aria-label="Portfolio projects"
+      ></section>
 
       <p
         class="portfolio-coming-soon"
-        id="home-projects-status"
+        id="portfolio-status"
         role="status"
         aria-live="polite"
       >
-        Loading projects…
+        Loading published projects…
       </p>
     </section>
 
-    <section class="services-summary container" aria-labelledby="services-title">
-      <h2 id="services-title">What I do</h2>
-      <ul>
-        <li>Graphic design</li>
-        <li>UI/UX design</li>
-        <li>Front-end development</li>
-      </ul>
+    <section class="container about-page one-page-section" id="about">
+      <div class="about-intro">
+        <img src="images/avatar.jpg" alt="Portrait of Desmond Simanya">
+        <div>
+          <p class="eyebrow">About me</p>
+          <h2>Hi, I’m Desmond Simanya.</h2>
+          <p>
+            I’m a graphic designer, UI/UX designer, and front-end developer
+            at the beginning of my creative journey.
+          </p>
+          <p>
+            I enjoy turning ideas into clear visual identities and easy-to-use
+            digital experiences. I’m building my portfolio and sharing new work
+            as I create it.
+          </p>
+        </div>
+      </div>
+
+      <section class="services about-services" aria-label="What I do">
+        <article class="service-card">
+          <h3>Graphic design</h3>
+          <p>Logos, brand identity, and visuals.</p>
+        </article>
+        <article class="service-card">
+          <h3>Front-end development</h3>
+          <p>Responsive websites built with HTML, CSS, and JavaScript.</p>
+        </article>
+        <article class="service-card">
+          <h3>UI/UX design</h3>
+          <p>App and website screens that are clear and easy to use.</p>
+        </article>
+      </section>
+
+      <div class="about-company">
+        <div>
+          <p class="eyebrow">More from me</p>
+          <h2>I also run Simi Core.</h2>
+          <p>
+            Simi Core is my company for graphic design, web development,
+            agribusiness, and app development.
+          </p>
+        </div>
+        <a class="button" href="#contact">Get in touch</a>
+      </div>
     </section>
 
-    <section class="contact-banner container">
-      <p class="eyebrow">Have a project in mind?</p>
-      <h2>Let’s work together.</h2>
-      <a class="button" href="contact.html">Get in touch</a>
+    <section class="container contact-page one-page-section" id="contact">
+      <div class="contact-heading">
+        <p class="eyebrow">Contact</p>
+        <h2>Let’s talk<span>.</span></h2>
+        <p>Have a project in mind? Get in touch—I’d love to hear about it.</p>
+        <p class="contact-availability">
+          <span aria-hidden="true"></span>
+          Available for new projects
+        </p>
+      </div>
+
+      <div class="contact-details" aria-label="Contact details">
+        <article class="contact-card">
+          <h3>Email</h3>
+          <a href="mailto:desimsimi@gmail.com">desimsimi@gmail.com</a>
+        </article>
+
+        <article class="contact-card">
+          <h3>Phone</h3>
+          <a href="tel:0758570442">0758570442</a>
+        </article>
+
+        <a
+          class="button"
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=desimsimi%40gmail.com&su=Project%20enquiry"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Send me an email <span aria-hidden="true">→</span>
+        </a>
+
+        <a
+          class="button"
+          href="https://wa.me/256758570442?text=Hello%20Desmond%2C%20I%27d%20like%20to%20discuss%20a%20project."
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M20 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.2A8.5 8.5 0 1 1 20 11.5Z"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M8.2 7.7c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.7 1.7c.1.2.1.4-.1.6l-.6.7c-.2.2-.2.4 0 .6.5.9 1.3 1.7 2.2 2.2.2.1.4.1.6-.1l.7-.8c.2-.2.4-.2.6-.1l1.6.8c.2.1.4.3.4.5 0 .4-.2 1.1-.6 1.4-.5.4-1.1.6-1.8.5-1.1-.2-2.4-.8-3.7-2-1.2-1.1-2-2.4-2.3-3.4-.3-.9 0-1.7.6-2.6Z"
+              fill="currentColor"
+            />
+          </svg>
+          <span>Message me on WhatsApp</span>
+        </a>
+      </div>
     </section>
   </main>
 
@@ -103,10 +210,10 @@
 
       <nav class="footer-links" aria-label="Footer navigation">
         <h2>Pages</h2>
-        <a href="index.html">Home</a>
-        <a href="work.html">Work</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
+        <a href="#home">Home</a>
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
       </nav>
 
       <section class="footer-contact">
@@ -124,7 +231,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
-  <script src="js/home.js" defer></script>
+  <script src="js/work.js" defer></script>
   <script src="js/main.js" defer></script>
 </body>
 </html>
