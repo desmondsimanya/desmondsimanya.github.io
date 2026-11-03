@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Desmond Simanya is a graphic designer, UI/UX designer, and front-end developer.">
+  <title>Desmond Simanya | Designer &amp; Front-end Developer</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header container" id="top">
+    <a class="brand" href="index.html" aria-label="Desmond Simanya, home">
+      <img src="images/avatar.jpg" alt="">
+      <span>Desmond Simanya</span>
+    </a>
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="primary-navigation"
+      aria-label="Open navigation"
+    >
+      <span class="menu-icon" aria-hidden="true"></span>
+    </button>
+
+    <nav class="site-nav" id="primary-navigation" aria-label="Main navigation">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <a class="button button-small" href="contact.html">Hire me</a>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <p class="eyebrow">Graphic design · UI/UX · Front-end</p>
+      <h1>Design<br>&amp; build.</h1>
+      <p class="hero-intro">
+        I’m Desmond Simanya, a graphic designer, UI/UX designer, and
+        front-end developer building my skills and portfolio one project at a time.
+      </p>
+      <a class="button" href="#selected-work">
+        See my work <span aria-hidden="true">→</span>
+      </a>
+      <img
+        class="hero-photo"
+        src="images/avatar.jpg"
+        alt="Portrait of Desmond Simanya"
+      >
+    </section>
+
+    <section class="services container" aria-label="Services">
+      <article class="service-card">
+        <h2>Graphic design</h2>
+        <p>Logos, brand identity, and visuals.</p>
+      </article>
+
+      <article class="service-card">
+        <h2>Front-end development</h2>
+        <p>Responsive websites built with HTML, CSS, and JavaScript.</p>
+      </article>
+
+      <article class="service-card">
+        <h2>UI/UX design</h2>
+        <p>App and website screens that are clear and easy to use.</p>
+      </article>
+    </section>
+
+    <section class="selected-work container" id="selected-work">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Portfolio</p>
+          <h2>Selected work</h2>
+        </div>
+        <a href="work.html">
+          See all work <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div class="work-grid" id="home-projects"></div>
+
+      <p
+        class="portfolio-coming-soon"
+        id="home-projects-status"
+        role="status"
+        aria-live="polite"
+      >
+        Loading projects…
+      </p>
+    </section>
+
+    <section class="contact-banner container">
+      <p class="eyebrow">Have a project in mind?</p>
+      <h2>Let’s work together.</h2>
+      <a class="button" href="mailto:desimsimi@gmail.com">Send me an email</a>
+    </section>
+  </main>
+
+  <footer class="site-footer container">
+    <div class="footer-main">
+      <section class="footer-profile">
+        <a class="brand" href="index.html">
+          <img src="images/avatar.jpg" alt="">
+          <span>Desmond Simanya</span>
+        </a>
+        <p>Graphic designer, UI/UX designer, and front-end developer.</p>
+      </section>
+
+      <nav class="footer-links" aria-label="Footer navigation">
+        <h2>Pages</h2>
+        <a href="index.html">Home</a>
+        <a href="work.html">Work</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <section class="footer-contact">
+        <h2>Contact</h2>
+        <a href="mailto:desimsimi@gmail.com">desimsimi@gmail.com</a>
+        <a href="tel:0758570442">0758570442</a>
+      </section>
+    </div>
+
+    <div class="footer-bottom">
+      <small>© Desmond Simanya. All rights reserved.</small>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="js/home.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

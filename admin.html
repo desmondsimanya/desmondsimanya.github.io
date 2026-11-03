@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Portfolio Admin | Desmond Simanya</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="container admin-page">
+    <a href="index.html">← Back to portfolio</a>
+
+    <header class="admin-heading">
+      <p class="eyebrow">Private area</p>
+      <h1>Portfolio manager</h1>
+      <p>Sign in to add and manage your portfolio projects.</p>
+    </header>
+
+    <p id="admin-status" role="status" aria-live="polite"></p>
+
+    <section class="admin-panel" id="login-panel">
+      <h2>Sign in</h2>
+
+      <form id="login-form">
+        <label for="login-email">Email</label>
+        <input
+          id="login-email"
+          name="email"
+          type="email"
+          autocomplete="username"
+          required
+        >
+
+        <label for="login-password">Password</label>
+        <input
+          id="login-password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+        >
+
+        <button class="button" type="submit">Sign in</button>
+      </form>
+    </section>
+
+    <section class="admin-panel" id="upload-panel" hidden>
+      <div class="admin-panel-heading">
+        <h2>Add a project</h2>
+        <button class="button button-small" id="sign-out" type="button">
+          Sign out
+        </button>
+      </div>
+
+      <form id="upload-form">
+        <label for="project-title">Project title</label>
+        <input
+          id="project-title"
+          name="title"
+          type="text"
+          maxlength="120"
+          required
+        >
+
+        <label for="project-category">Category</label>
+        <select id="project-category" name="category" required>
+          <option value="branding">Branding</option>
+          <option value="graphic-design">Graphic design</option>
+          <option value="websites">Websites</option>
+          <option value="ui-ux">UI/UX &amp; Apps</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="project-alt">Image description</label>
+        <input
+          id="project-alt"
+          name="alt_text"
+          type="text"
+          maxlength="250"
+          required
+        >
+
+        <label for="project-image">
+          Project image (JPG, PNG, or WebP; max 5 MB)
+        </label>
+        <input
+          id="project-image"
+          name="image"
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          required
+        >
+
+        <label class="admin-checkbox">
+          <input name="is_published" type="checkbox">
+          Publish this project on the public Work page
+        </label>
+
+        <button class="button" type="submit">Upload project</button>
+      </form>
+    </section>
+
+    <section class="admin-panel" id="projects-panel" hidden>
+      <h2>Manage projects</h2>
+      <p>Review your projects, change their published status, or remove them.</p>
+
+      <p id="projects-status" role="status" aria-live="polite">
+        Your projects will appear here.
+      </p>
+
+      <div id="admin-project-list"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="js/admin.js" defer></script>
+</body>
+</html>
