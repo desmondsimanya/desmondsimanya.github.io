@@ -589,6 +589,11 @@ a:focus-visible {
   gap: 16px;
 }
 
+.contact-details > .button[href^="https://wa.me/"] {
+  background: #25D366;
+  color: #fff;
+}
+
 .contact-card {
   padding: 20px 24px;
   border: 1px solid var(--color-border);
