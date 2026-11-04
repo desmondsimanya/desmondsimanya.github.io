@@ -27,7 +27,7 @@ async function loadHomeProjects() {
 
   const { data: projects, error } = await client
     .from("portfolio_projects")
-    .select("id, title, category, image_path, alt_text")
+    .select("id, title, category, image_path, alt_text, project_url")
     .eq("is_published", true)
     .order("created_at", { ascending: false })
     .limit(3);
@@ -43,20 +43,18 @@ async function loadHomeProjects() {
     const categoryLabel = homeCategoryLabels[project.category];
 
     if (!categoryLabel) continue;
-
-    const { data } = client.storage
-      .from("portfolio-images")
-      .getPublicUrl(project.image_path);
+    if (project.category === "websites" && !project.project_url) continue;
 
     const card = document.createElement("a");
     card.className = "work-card";
-    card.href = "work.html";
-
-    const image = document.createElement("img");
-    image.className = "portfolio-art";
-    image.src = data.publicUrl;
-    image.alt = project.alt_text;
-    image.loading = "lazy";
+    card.href =
+      project.category === "websites" && project.project_url
+        ? project.project_url
+        : "work.html";
+    if (project.category === "websites" && project.project_url) {
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+    }
 
     const title = document.createElement("h3");
     title.textContent = project.title;
@@ -64,7 +62,26 @@ async function loadHomeProjects() {
     const category = document.createElement("p");
     category.textContent = categoryLabel;
 
-    card.append(image, title, category);
+    if (project.category === "websites" && project.project_url) {
+      const websiteLinkLabel = document.createElement("span");
+      websiteLinkLabel.className = "website-project-link";
+      websiteLinkLabel.textContent = "Visit website ↗";
+      card.append(websiteLinkLabel, title, category);
+    } else if (project.image_path) {
+      const { data } = client.storage
+        .from("portfolio-images")
+        .getPublicUrl(project.image_path);
+
+      const image = document.createElement("img");
+      image.className = "portfolio-art";
+      image.src = data.publicUrl;
+      image.alt = project.alt_text || project.title;
+      image.loading = "lazy";
+      card.append(image, title, category);
+    } else {
+      continue;
+    }
+
     homeProjectGrid.append(card);
   }
 
