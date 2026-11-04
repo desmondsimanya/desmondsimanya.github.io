@@ -72,32 +72,48 @@
           <option value="other">Other</option>
         </select>
 
-        <label for="project-alt">Image description</label>
-        <input
-          id="project-alt"
-          name="alt_text"
-          type="text"
-          maxlength="250"
-          required
-        >
+        <div class="admin-field-group" id="project-image-fields">
+          <label for="project-alt">Image description</label>
+          <input
+            id="project-alt"
+            name="alt_text"
+            type="text"
+            maxlength="250"
+            required
+          >
 
-        <label for="project-image">
-          Project image (JPG, PNG, or WebP; max 5 MB)
-        </label>
-        <input
-          id="project-image"
-          name="image"
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          required
-        >
+          <label for="project-image">
+            Project image (JPG, PNG, or WebP; max 5 MB)
+          </label>
+          <input
+            id="project-image"
+            name="image"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            required
+          >
+        </div>
+
+        <div class="admin-field-group" id="project-website-fields" hidden>
+          <label for="project-url">Website link</label>
+          <input
+            id="project-url"
+            name="project_url"
+            type="url"
+            inputmode="url"
+            placeholder="https://example.com"
+          >
+          <p class="admin-field-hint">
+            Enter the full link, including https://. Website projects are shown as links, without an image.
+          </p>
+        </div>
 
         <label class="admin-checkbox">
           <input name="is_published" type="checkbox">
           Publish this project on the public Work page
         </label>
 
-        <button class="button" type="submit">Upload project</button>
+        <button class="button" id="project-submit" type="submit">Upload project</button>
       </form>
     </section>
 
