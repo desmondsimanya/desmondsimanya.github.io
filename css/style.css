@@ -697,6 +697,30 @@ a:focus-visible {
   transition: transform 220ms ease;
 }
 
+.portfolio-image-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 12px;
+  background: var(--color-bg);
+  cursor: zoom-in;
+}
+
+.portfolio-image-button:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+.portfolio-image-button .portfolio-art {
+  transition: transform 220ms ease;
+}
+
+.portfolio-image-button:hover .portfolio-art {
+  transform: scale(1.025);
+}
+
 .work-gallery-page .portfolio-card:hover .portfolio-art {
   transform: scale(0.985);
 }
@@ -715,6 +739,105 @@ a:focus-visible {
   padding: 32px;
   border-color: var(--color-border);
   background: var(--color-surface);
+}
+
+.website-project-link {
+  display: flex;
+  min-height: 200px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 50% 45%, rgb(194 248 27 / 12%), transparent 48%),
+    var(--color-bg);
+  color: var(--color-accent);
+  font-weight: 700;
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+
+.website-project-link:hover {
+  border-color: var(--color-accent);
+  background-color: #1a2017;
+}
+
+.website-project-icon {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  border: 1px solid rgb(194 248 27 / 40%);
+  border-radius: 18px;
+  background: rgb(194 248 27 / 9%);
+  font-size: 2rem;
+}
+
+.project-preview-dialog {
+  width: min(94vw, 1100px);
+  max-width: none;
+  max-height: 92dvh;
+  padding: 0;
+  overflow: visible;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 24px 80px rgb(0 0 0 / 55%);
+}
+
+.project-preview-dialog::backdrop {
+  background: rgb(0 0 0 / 82%);
+  backdrop-filter: blur(6px);
+}
+
+.project-preview-content {
+  position: relative;
+  display: grid;
+  max-height: 92dvh;
+  gap: 12px;
+  padding: 16px;
+}
+
+.project-preview-content img {
+  width: 100%;
+  max-height: calc(92dvh - 80px);
+  border-radius: 12px;
+  background: var(--color-bg);
+  object-fit: contain;
+}
+
+.project-preview-content p {
+  margin: 0;
+  color: var(--color-text);
+  font-weight: 700;
+  text-align: center;
+}
+
+.project-preview-close {
+  position: absolute;
+  z-index: 1;
+  top: 24px;
+  right: 24px;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 50%;
+  background: rgb(18 20 19 / 86%);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 1.7rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.project-preview-close:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 @media (max-width: 700px) {
@@ -758,6 +881,19 @@ a:focus-visible {
 
   .work-gallery-page .portfolio-grid {
     gap: 18px;
+  }
+
+  .website-project-link {
+    min-height: 180px;
+  }
+
+  .project-preview-content {
+    padding: 10px;
+  }
+
+  .project-preview-close {
+    top: 16px;
+    right: 16px;
   }
 }
 
@@ -1601,6 +1737,15 @@ a:focus-visible {
   gap: 10px;
 }
 
+.admin-field-group {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-field-group[hidden] {
+  display: none;
+}
+
 .admin-panel label {
   margin-top: 10px;
   font-weight: 700;
@@ -1622,6 +1767,12 @@ a:focus-visible {
 
 .admin-panel input[type="file"] {
   padding: 8px;
+}
+
+.admin-field-hint {
+  margin: -4px 0 0;
+  color: var(--color-muted);
+  font-size: 0.88rem;
 }
 
 .admin-panel input:focus-visible,
