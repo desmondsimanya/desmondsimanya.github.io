@@ -47,19 +47,24 @@ a:focus-visible {
 
 .site-header {
   position: sticky;
-  top: 12px;
+  top: 0;
   z-index: 20;
   min-height: 76px;
+  width: 100%;
+  max-width: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  margin-top: 16px;
-  padding: 10px 18px;
-  border: 1px solid var(--color-border);
-  border-radius: 18px;
-  background: var(--color-surface);
-  box-shadow: 0 12px 32px rgb(0 0 0 / 20%);
+  margin: 0;
+  padding: 10px max(20px, calc((100vw - 1100px) / 2 + 18px));
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0 0 18px 18px;
+  background: rgb(18 20 19 / 92%);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 22%);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
 }
 
 .brand {
@@ -78,6 +83,8 @@ a:focus-visible {
 }
 
 .site-header nav {
+  position: relative;
+  isolation: isolate;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -87,7 +94,27 @@ a:focus-visible {
   background: var(--color-bg);
 }
 
+.site-header nav::before {
+  position: absolute;
+  z-index: -1;
+  top: 5px;
+  bottom: 5px;
+  left: var(--active-left, 5px);
+  width: var(--active-width, 0px);
+  border-radius: 999px;
+  background: linear-gradient(115deg, #c2f81b 0%, #54dfad 52%, #75c9ff 100%);
+  content: "";
+  opacity: var(--active-opacity, 0);
+  transition:
+    left 360ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    width 360ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    opacity 160ms ease;
+  pointer-events: none;
+}
+
 .site-header nav a {
+  position: relative;
+  z-index: 1;
   padding: 8px 14px;
   border-radius: 999px;
   color: var(--color-muted);
@@ -103,8 +130,8 @@ a:focus-visible {
 
 .site-header nav a[aria-current="page"],
 .site-header nav a[aria-current="location"] {
-  color: var(--color-bg);
-  background: var(--color-accent);
+  color: #121413;
+  background: transparent;
 }
 
 .menu-toggle {
@@ -408,7 +435,7 @@ a:focus-visible {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto auto;
     gap: 10px;
-    padding: 10px 12px;
+    padding: 10px 16px;
   }
 
   .hero {
@@ -1061,7 +1088,6 @@ a:focus-visible {
 @media (max-width: 700px) {
   .site-header {
     grid-template-columns: minmax(0, 1fr) auto auto;
-    position: sticky;
   }
 
   .brand {
@@ -1123,6 +1149,7 @@ a:focus-visible {
   }
 
   .site-header nav {
+    isolation: auto;
     display: none;
     position: absolute;
     z-index: 5;
@@ -1139,6 +1166,10 @@ a:focus-visible {
     background: rgb(36 40 36 / 96%);
     box-shadow: 0 18px 38px rgb(0 0 0 / 40%);
     backdrop-filter: blur(14px);
+  }
+
+  .site-header nav::before {
+    display: none;
   }
 
   .site-header nav.is-open {
@@ -1159,7 +1190,8 @@ a:focus-visible {
 
   .site-header nav a[aria-current="page"],
   .site-header nav a[aria-current="location"] {
-    color: var(--color-accent);
+    color: var(--color-bg);
+    background: linear-gradient(115deg, #c2f81b 0%, #54dfad 52%, #75c9ff 100%);
   }
 
   .one-page-section {
@@ -1298,6 +1330,118 @@ a:focus-visible {
 
   .footer-profile {
     grid-column: auto;
+  }
+}
+
+/* Full-bleed panels keep their content aligned to the site grid. */
+
+.edge-panel {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding-inline: max(20px, calc((100vw - 1100px) / 2 + 20px));
+  border-radius: 0;
+}
+
+.hero.edge-panel {
+  border-right: 0;
+  border-left: 0;
+}
+
+#work.edge-panel {
+  margin-top: 40px;
+  padding-top: 48px;
+  padding-bottom: 48px;
+  border-block: 1px solid var(--color-border);
+  background:
+    radial-gradient(ellipse at 92% 0%, rgb(194 248 27 / 5%), transparent 38%),
+    var(--color-surface);
+}
+
+#about.edge-panel {
+  padding-top: 56px;
+  padding-bottom: 56px;
+  background: linear-gradient(180deg, rgb(36 40 36 / 40%), transparent);
+}
+
+#about.edge-panel > .about-intro,
+#about.edge-panel > .about-services,
+#about.edge-panel > .about-company {
+  width: 100%;
+  max-width: 1100px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#about.edge-panel > .about-services,
+#about.edge-panel > .about-company {
+  margin-top: 24px;
+}
+
+.contact-page.edge-panel {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding: 56px max(20px, calc((100vw - 1100px) / 2 + 40px));
+  border: 0;
+  border-block: 1px solid var(--color-border);
+  border-radius: 0;
+}
+
+.site-footer.edge-panel {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding-right: max(20px, calc((100vw - 1100px) / 2 + 34px));
+  padding-left: max(20px, calc((100vw - 1100px) / 2 + 34px));
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0;
+}
+
+.site-footer.edge-panel > .footer-main,
+.site-footer.edge-panel > .footer-bottom {
+  width: 100%;
+  max-width: 1100px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.edge-to-edge-layout .portfolio-intro {
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+  padding-right: max(24px, calc((100vw - 1100px) / 2 + 64px));
+  padding-left: max(24px, calc((100vw - 1100px) / 2 + 64px));
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0;
+}
+
+@media (max-width: 700px) {
+  #work.edge-panel {
+    margin-top: 24px;
+    padding-top: 36px;
+    padding-bottom: 36px;
+  }
+
+  #about.edge-panel {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .contact-page.edge-panel {
+    padding: 36px 20px;
+  }
+
+  .site-footer.edge-panel {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .edge-to-edge-layout .portfolio-intro {
+    padding-right: 24px;
+    padding-left: 24px;
   }
 }
 
