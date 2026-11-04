@@ -1,210 +1,322 @@
-const menuToggle = document.querySelector(".menu-toggle");
-const siteNav = document.querySelector("#primary-navigation");
+const statusMessage = document.querySelector("#admin-status");
+const loginPanel = document.querySelector("#login-panel");
+const uploadPanel = document.querySelector("#upload-panel");
+const projectsPanel = document.querySelector("#projects-panel");
+const projectsStatus = document.querySelector("#projects-status");
+const projectList = document.querySelector("#admin-project-list");
+const loginForm = document.querySelector("#login-form");
+const uploadForm = document.querySelector("#upload-form");
+const signOutButton = document.querySelector("#sign-out");
+const config = window.portfolioSupabaseConfig;
+
+const categoryLabels = {
+  branding: "Branding",
+  "graphic-design": "Graphic design",
+  websites: "Websites",
+  "ui-ux": "UI/UX & Apps",
+  other: "Other"
+};
 
 if (
-  "IntersectionObserver" in window &&
-  !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  !statusMessage ||
+  !loginPanel ||
+  !uploadPanel ||
+  !projectsPanel ||
+  !projectsStatus ||
+  !projectList ||
+  !loginForm ||
+  !uploadForm ||
+  !signOutButton
 ) {
-  const revealObserver = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      });
-    },
-    { threshold: 0.12, rootMargin: "0px 0px -32px 0px" }
+  console.error("Admin page is missing required elements.");
+} else if (
+  !window.supabase?.createClient ||
+  !config?.url ||
+  !config?.publishableKey
+) {
+  statusMessage.textContent =
+    "Could not connect to Supabase. Check that the Supabase library and config loaded.";
+} else {
+  const supabaseClient = window.supabase.createClient(
+    config.url,
+    config.publishableKey
   );
 
-  function observeRevealElements(root) {
-    if (root instanceof Element && root.matches(".portfolio-card")) {
-      root.classList.add("reveal-on-scroll");
-      revealObserver.observe(root);
-    }
-
-    root.querySelectorAll?.(
-      "main > section, .portfolio-card, .service-card, .contact-card"
-    ).forEach((element) => {
-      element.classList.add("reveal-on-scroll");
-      revealObserver.observe(element);
-    });
+  function setStatus(message) {
+    statusMessage.textContent = message;
   }
 
-  document.documentElement.classList.add("motion-ready");
-  observeRevealElements(document);
+  function showSession(session) {
+    loginPanel.hidden = Boolean(session);
+    uploadPanel.hidden = !session;
+    projectsPanel.hidden = !session;
 
-  const contentObserver = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      mutation.addedNodes.forEach((node) => {
-        if (node instanceof Element) {
-          observeRevealElements(node);
-        }
-      });
-    });
-  });
-
-  contentObserver.observe(document.querySelector("main"), {
-    childList: true,
-    subtree: true
-  });
-}
-
-if (siteNav) {
-  const sectionLinks = Array.from(
-    siteNav.querySelectorAll('a[href^="#"]')
-  ).filter((link) => document.querySelector(link.getAttribute("href")));
-
-  function setActiveSection(link) {
-    sectionLinks.forEach((sectionLink) => {
-      if (sectionLink === link) {
-        sectionLink.setAttribute("aria-current", "location");
-      } else {
-        sectionLink.removeAttribute("aria-current");
-      }
-    });
-  }
-
-  function updateActiveSection() {
-    const activationPoint =
-      window.scrollY + (document.querySelector(".site-header")?.offsetHeight || 0) + 40;
-    let activeLink = sectionLinks[0];
-
-    sectionLinks.forEach((link) => {
-      const section = document.querySelector(link.getAttribute("href"));
-
-      if (section && section.offsetTop <= activationPoint) {
-        activeLink = link;
-      }
-    });
-
-    if (activeLink) {
-      setActiveSection(activeLink);
-    }
-  }
-
-  siteNav.addEventListener("click", (event) => {
-    if (!(event.target instanceof Element)) return;
-
-    const link = event.target.closest('a[href^="#"]');
-    if (link && sectionLinks.includes(link)) {
-      setActiveSection(link);
-    }
-  });
-
-  let activeSectionFrame = 0;
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (activeSectionFrame) return;
-
-      activeSectionFrame = window.requestAnimationFrame(() => {
-        updateActiveSection();
-        activeSectionFrame = 0;
-      });
-    },
-    { passive: true }
-  );
-
-  window.addEventListener("resize", updateActiveSection);
-  updateActiveSection();
-}
-
-if (menuToggle && siteNav) {
-  function closeMenu() {
-    menuToggle.setAttribute("aria-expanded", "false");
-    menuToggle.setAttribute("aria-label", "Open navigation");
-    siteNav.classList.remove("is-open");
-  }
-
-  menuToggle.addEventListener("click", () => {
-    const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
-
-    menuToggle.setAttribute("aria-expanded", String(!isOpen));
-    menuToggle.setAttribute(
-      "aria-label",
-      isOpen ? "Open navigation" : "Close navigation"
-    );
-    siteNav.classList.toggle("is-open", !isOpen);
-  });
-
-  siteNav.addEventListener("click", (event) => {
-    if (event.target instanceof Element && event.target.closest("a")) {
-      closeMenu();
-    }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeMenu();
-    }
-  });
-
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 700) {
-      closeMenu();
-    }
-  });
-}
-
-const portfolioFilters = document.querySelector(".portfolio-filters");
-const portfolioGrid = document.querySelector("#portfolio-grid");
-const filterStatusMessage = document.querySelector("#portfolio-status");
-
-if (portfolioFilters && portfolioGrid && filterStatusMessage) {
-  function applyPortfolioFilter(button) {
-    const selectedCategory = button.dataset.filter;
-    const cards = portfolioGrid.querySelectorAll(".portfolio-card");
-    let visibleCount = 0;
-
-    portfolioFilters.querySelectorAll("[data-filter]").forEach((filterButton) => {
-      filterButton.setAttribute(
-        "aria-pressed",
-        String(filterButton === button)
-      );
-    });
-
-    cards.forEach((card) => {
-      const matches =
-        selectedCategory === "all" ||
-        card.dataset.category === selectedCategory;
-
-      card.hidden = !matches;
-
-      if (matches) {
-        visibleCount += 1;
-      }
-    });
-
-    if (visibleCount > 0) {
-      filterStatusMessage.hidden = true;
+    if (session) {
+      loadProjects();
     } else {
-      filterStatusMessage.textContent =
-        selectedCategory === "all"
-          ? "No published projects yet. New work will appear here as it is published."
-          : "No projects in this category yet. New work will appear here as I create it.";
-      filterStatusMessage.hidden = false;
+      projectList.replaceChildren();
     }
   }
 
-  portfolioFilters.addEventListener("click", (event) => {
-    if (!(event.target instanceof Element)) return;
+  async function loadProjects() {
+    projectsStatus.textContent = "Loading projects…";
+    projectsStatus.hidden = false;
+    projectList.replaceChildren();
 
-    const button = event.target.closest("[data-filter]");
-    if (!button || !portfolioFilters.contains(button)) return;
+    const { data: projects, error } = await supabaseClient
+      .from("portfolio_projects")
+      .select("id, title, category, image_path, is_published")
+      .order("created_at", { ascending: false });
 
-    applyPortfolioFilter(button);
-  });
+    if (error) {
+      projectsStatus.textContent = `Could not load projects: ${error.message}`;
+      return;
+    }
 
-  const cardsObserver = new MutationObserver(() => {
-    const selectedButton = portfolioFilters.querySelector(
-      '[aria-pressed="true"]'
+    if (projects.length === 0) {
+      projectsStatus.textContent = "You haven’t uploaded any projects yet.";
+      return;
+    }
+
+    projectsStatus.hidden = true;
+
+    for (const project of projects) {
+      const item = document.createElement("article");
+      item.className = "admin-project-item";
+
+      const details = document.createElement("div");
+      details.className = "admin-project-details";
+
+      const title = document.createElement("h3");
+      title.textContent = project.title;
+
+      const category = document.createElement("p");
+      category.textContent =
+        categoryLabels[project.category] || project.category;
+
+      const publication = document.createElement("p");
+      publication.textContent = project.is_published ? "Published" : "Unpublished";
+      publication.className = project.is_published
+        ? "admin-project-published"
+        : "admin-project-unpublished";
+
+      const actions = document.createElement("div");
+      actions.className = "admin-project-actions";
+
+      const publishButton = document.createElement("button");
+      publishButton.type = "button";
+      publishButton.className = "button button-small";
+      publishButton.textContent = project.is_published
+        ? "Unpublish"
+        : "Publish";
+      publishButton.addEventListener("click", () => {
+        updateProjectPublication(project.id, !project.is_published);
+      });
+
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.className = "admin-delete-button";
+      deleteButton.textContent = "Delete";
+      deleteButton.addEventListener("click", () => {
+        deleteProject(project);
+      });
+
+      details.append(title, category, publication);
+      actions.append(publishButton, deleteButton);
+      item.append(details, actions);
+      projectList.append(item);
+    }
+  }
+
+  async function updateProjectPublication(projectId, isPublished) {
+    projectsStatus.textContent = "Updating project…";
+    projectsStatus.hidden = false;
+
+    const { error } = await supabaseClient
+      .from("portfolio_projects")
+      .update({ is_published: isPublished })
+      .eq("id", projectId);
+
+    if (error) {
+      projectsStatus.textContent = `Could not update project: ${error.message}`;
+      return;
+    }
+
+    projectsStatus.textContent = isPublished
+      ? "Project published."
+      : "Project unpublished.";
+
+    await loadProjects();
+  }
+
+  async function deleteProject(project) {
+    const confirmed = window.confirm(
+      `Delete "${project.title}"? This removes it from your portfolio.`
     );
 
-    if (selectedButton && portfolioGrid.querySelector(".portfolio-card")) {
-      applyPortfolioFilter(selectedButton);
+    if (!confirmed) return;
+
+    projectsStatus.textContent = "Deleting project…";
+    projectsStatus.hidden = false;
+
+    const { error: deleteRowError } = await supabaseClient
+      .from("portfolio_projects")
+      .delete()
+      .eq("id", project.id);
+
+    if (deleteRowError) {
+      projectsStatus.textContent =
+        `Could not delete project: ${deleteRowError.message}`;
+      return;
     }
+
+    const { error: deleteImageError } = await supabaseClient.storage
+      .from("portfolio-images")
+      .remove([project.image_path]);
+
+    if (deleteImageError) {
+      projectsStatus.textContent =
+        `Project removed, but its image could not be deleted: ${deleteImageError.message}`;
+      await loadProjects();
+      return;
+    }
+
+    projectsStatus.textContent = "Project deleted.";
+    await loadProjects();
+  }
+
+  async function checkSession() {
+    const { data, error } = await supabaseClient.auth.getSession();
+
+    if (error) {
+      setStatus(`Could not check sign-in status: ${error.message}`);
+      return;
+    }
+
+    showSession(data.session);
+  }
+
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    showSession(session);
   });
 
-  cardsObserver.observe(portfolioGrid, { childList: true });
+  loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    setStatus("Signing in…");
+
+    const formData = new FormData(loginForm);
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email: formData.get("email"),
+      password: formData.get("password")
+    });
+
+    if (error) {
+      setStatus(`Sign-in failed: ${error.message}`);
+      return;
+    }
+
+    showSession(data.session);
+    setStatus("Signed in.");
+  });
+
+  signOutButton.addEventListener("click", async () => {
+    setStatus("Signing out…");
+
+    const { error } = await supabaseClient.auth.signOut();
+
+    if (error) {
+      setStatus(`Sign-out failed: ${error.message}`);
+      return;
+    }
+
+    showSession(null);
+    setStatus("You are signed out.");
+  });
+
+  uploadForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(uploadForm);
+    const image = formData.get("image");
+    const allowedTypes = {
+      "image/jpeg": "jpg",
+      "image/png": "png",
+      "image/webp": "webp"
+    };
+    const maxFileSize = 5 * 1024 * 1024;
+
+    if (!(image instanceof File) || image.size === 0) {
+      setStatus("Choose an image to upload.");
+      return;
+    }
+
+    if (!allowedTypes[image.type]) {
+      setStatus("Choose a JPG, PNG, or WebP image.");
+      return;
+    }
+
+    if (image.size > maxFileSize) {
+      setStatus("That image is larger than 5 MB. Choose a smaller file.");
+      return;
+    }
+
+    setStatus("Uploading your project…");
+
+    const { data: userData, error: userError } =
+      await supabaseClient.auth.getUser();
+
+    if (userError || !userData.user) {
+      setStatus("Your session has expired. Sign in again before uploading.");
+      showSession(null);
+      return;
+    }
+
+    const imagePath =
+      `${userData.user.id}/${crypto.randomUUID()}.${allowedTypes[image.type]}`;
+
+    const { error: uploadError } = await supabaseClient.storage
+      .from("portfolio-images")
+      .upload(imagePath, image, {
+        contentType: image.type,
+        upsert: false
+      });
+
+    if (uploadError) {
+      setStatus(`Image upload failed: ${uploadError.message}`);
+      return;
+    }
+
+    const { error: projectError } = await supabaseClient
+      .from("portfolio_projects")
+      .insert({
+        title: formData.get("title"),
+        category: formData.get("category"),
+        image_path: imagePath,
+        alt_text: formData.get("alt_text"),
+        is_published: formData.get("is_published") === "on"
+      });
+
+    if (projectError) {
+      const { error: cleanupError } = await supabaseClient.storage
+        .from("portfolio-images")
+        .remove([imagePath]);
+
+      if (cleanupError) {
+        setStatus(
+          `Project could not be saved: ${projectError.message}. ` +
+          `The uploaded image could not be removed: ${cleanupError.message}`
+        );
+        return;
+      }
+
+      setStatus(`Project could not be saved: ${projectError.message}`);
+      return;
+    }
+
+    uploadForm.reset();
+    setStatus("Project uploaded successfully.");
+    await loadProjects();
+  });
+
+  checkSession();
 }
